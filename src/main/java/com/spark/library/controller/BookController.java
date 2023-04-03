@@ -67,10 +67,10 @@ public class BookController {
         return "books/getupdatebook";
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public String updateBook(@ModelAttribute("book") @Valid Book book, BindingResult result, @PathVariable("id") Integer id) {
         if (result.hasErrors()) {
-            return "people/getupdateperson";
+            return "books/getupdatebook";
         }
         bookDao.update(id, book);
         return "redirect:/books";

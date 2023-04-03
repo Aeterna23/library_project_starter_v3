@@ -20,6 +20,7 @@
     <span> This book is available. Choose a person to assign</span>
     <br/>
     <form th:method="PATCH" th:action="@{/books/{id}/appoint(id = ${book.getId()})}">
+        <br/>
         <label for="person">Choose the person</label>
         <select th:object="${person}" th:field="*{id}" id="person">
             <option th:each="holder : ${people}" th:value="${holder.getId()}" th:text="${holder.getFullName()}">
@@ -30,7 +31,7 @@
 </div>
 <hr/>
 <br/>
-<form th:method="UPDATE" th:action="@{/books/{id}(id = ${book.getId()})}">
+<form th:method="GET" th:action="@{/books/{id}/updatebook(id = ${book.getId()})}">
     <input type="submit" value="Update book">
 </form>
 <br/>
