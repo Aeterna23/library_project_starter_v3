@@ -12,7 +12,6 @@ import org.hibernate.annotations.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@ToString
 @Entity
 @Table(appliesTo = "Book")
 public class Book {
@@ -40,5 +39,12 @@ public class Book {
     @ManyToOne()
     private Person owner;
 
-
+    @Override
+    public String toString() {
+        return "Book{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", edition=" + edition +
+                '}';
+    }
 }

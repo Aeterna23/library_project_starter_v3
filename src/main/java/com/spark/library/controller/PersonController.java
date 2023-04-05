@@ -1,7 +1,7 @@
 package com.spark.library.controller;
 
-import com.spark.library.dao.PersonDao;
 import com.spark.library.model.Person;
+import com.spark.library.services.PeopleService;
 import com.spark.library.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/people")
 public class PersonController {
 
-    private final PersonDao personDao;
+    private final PeopleService peopleService;
     private final PersonValidator personValidator;
 
     @Autowired
-    public PersonController(PersonDao personDao, PersonValidator personValidator) {
-        this.personDao = personDao;
+    public PersonController(PeopleService peopleService, PersonValidator personValidator) {
+        this.peopleService = peopleService;
         this.personValidator = personValidator;
     }
 
     @GetMapping
     public String getAllPeople(Model model) {
-        model.addAttribute("people", personDao.findAll());
+        model.addAttribute("people", peopleService.findAll());
         return "people/getall";
     }
 
     @GetMapping("/{id}")
     public String getPerson(@PathVariable(value = "id") Integer id, Model model) {
-        model.addAttribute("person", personDao.findById(id));
-        model.addAttribute("books", personDao.getPersonBooksById(id));
+        model.addAttribute("person", peopleService.findById(id));
+        model.addAttribute("books", peopleService.findBooks(id));
         return "people/getperson";
     }
 
@@ -48,13 +48,13 @@ public class PersonController {
         if (bindingResult.hasErrors()) {
             return "people/newperson";
         }
-        personDao.save(person);
+        peopleService.save(person);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/getupdateperson")
     public String getUpdatePerson( Model model,@PathVariable("id") Integer id) {
-        model.addAttribute("person", personDao.findById(id));
+        model.addAttribute("person", peopleService.findById(id));
         return "people/getupdateperson";
     }
 
@@ -64,15 +64,14 @@ public class PersonController {
         if (result.hasErrors()) {
             return "people/getupdateperson";
         }
-        personDao.update(id, person);
+        peopleService.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String deletePerson(@PathVariable("id") Integer id){
-        personDao.delete(id);
+        peopleService.delete(id);
         return "redirect:/people";
     }
-
 
 }
